@@ -1,22 +1,29 @@
+# Fase 1: Base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080 
+
+# Fase 2: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# -------------------- CORRECCIÓN FINAL DE COPIA Y RESTAURACIÓN --------------------
+# Copiamos TODOS los archivos de TODAS las carpetas (Model y ZooModelos2) de una sola vez
+COPY . .
 
-# 1. Copia solo los archivos .csproj de ambos proyectos para la restauración
-COPY ZooModelos2/ZooModelos2.csproj ZooModelos2/
-COPY Model/Model.csproj Model/
-
-# 2. Restaura AMBOS proyectos
-# (dotnet restore ahora puede ver ambos archivos .csproj)
-RUN dotnet restore ZooModelos2/ZooModelos2.csproj
-
-# 3. Copia el resto del código
-# Copia todo el contenido de la raíz del repositorio (incluyendo el código fuente de Model)
-COPY . . 
-
-# 4. Mueve el directorio de trabajo a la API
+# Movemos el directorio de trabajo al proyecto principal
 WORKDIR "/src/ZooModelos2" 
 
-# 5. Construye el proyecto API 
+# Restaura y construye el proyecto principal.
+# Nota: Si el error persiste aquí, el .csproj DEBE ser editado para quitar la referencia.
+RUN dotnet restore "ZooModelos2.csproj"
 RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
+
+# Fase 3: Publish
+FROM build AS publish
+RUN dotnet publish "ZooModelos2.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Fase 4: Final
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ZooModelos2.dll"]
