@@ -13,6 +13,6 @@ FROM build AS publish
 RUN dotnet publish "ZooModelos2.csproj" -c Release -o /app/publish
 
 FROM base AS final
-WORKDIR /app
+WORKDIR /app 
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ZooModelos2.dll"]
