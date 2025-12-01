@@ -11,9 +11,9 @@ namespace Model
     {
 
         [Key] public int Id { get; set; }
-        public string Nombres { get; set; }
+        public string Nombres { get; set; } = string.Empty;
         public int Edad { get; set; }
-        public string Genero { get; set; }
+        public string Genero { get; set; } = string.Empty;
 
         // FK
         public int EspecieCodigo { get; set; }

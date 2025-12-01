@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model;
 
-namespace ZooModelos.Controllers
+namespace ZooModelos2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
