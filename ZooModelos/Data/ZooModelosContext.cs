@@ -12,9 +12,9 @@ using Model;
         {
         }
 
-        public DbSet<Model.Animal> Animal { get; set; } = default!;
+        public DbSet<Animal> Animal { get; set; } = default!;
 
-public DbSet<Model.Especie> Especie { get; set; } = default!;
+public DbSet<Especie> Especie { get; set; } = default!;
 
-public DbSet<Model.Raza> Raza { get; set; } = default!;
+public DbSet<Raza> Raza { get; set; } = default!;
     }
