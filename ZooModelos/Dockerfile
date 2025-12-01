@@ -1,16 +1,23 @@
+# Fase 1: Base
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080 
 
 # Fase 2: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src/ZooModelos2 
-# -------------------- CORRECCIÓN CRÍTICA DE RUTA --------------------
-# 1. Copiamos TODOS los archivos de TODAS las carpetas (Model y ZooModelos2) 
-#    a la carpeta del proyecto (/src/ZooModelos2).
+WORKDIR /src 
+# -------------------- CORRECCIÓN FINAL DE RUTA Y SECUENCIA --------------------
+# 1. Copia solo los archivos de proyecto al nivel de /src
+COPY ZooModelos2/ZooModelos2.csproj ZooModelos2/
+# Ya que tienes la librería Model, también debes copiarla al nivel /src
+COPY Model/Model.csproj Model/ 
+
+# 2. Copia todo el contenido restante (Controladores, código de entidades, etc.)
 COPY . .
 
-# 2. Restaura y construye el proyecto principal (Ahora encuentra el .csproj)
+# 3. Restaura y construye el proyecto principal 
+# (Ahora el WORKDIR se cambia antes de construir)
+WORKDIR /src/ZooModelos2 
 RUN dotnet restore "ZooModelos2.csproj"
 RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
 # -------------------- FIN CORRECCIÓN CRÍTICA DE RUTA ----------------------
