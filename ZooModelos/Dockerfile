@@ -22,5 +22,5 @@ COPY . .
 
 WORKDIR "/src/ZooModelos2" 
 
-# 4. Construye el proyecto API
+# 4. Construye el proyecto API 
 RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
