@@ -1,26 +1,22 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# -------------------- CORRECCIÓN FINAL DE RUTAS DE COPIA --------------------
-# 1. Copia el archivo de la LIBRERÍA DE CLASES
-# Asumiendo que Model y ZooModelos2 están en la raíz del repositorio.
-COPY Model Model/
-COPY ZooModelos2 ZooModelos2/
+# -------------------- CORRECCIÓN FINAL DE COPIA Y RESTAURACIÓN --------------------
 
-# 2. Restaura AMBOS proyectos.
-# Usamos el archivo .sln para restaurar ambos proyectos si existe, si no, restauramos la API.
-# Si el archivo de la solución está en la raíz, úsalo:
-# COPY ZooModelos2.sln .
-# RUN dotnet restore ZooModelos2.sln
+# 1. Copia solo los archivos .csproj de ambos proyectos para la restauración
+COPY ZooModelos2/ZooModelos2.csproj ZooModelos2/
+COPY Model/Model.csproj Model/
 
-# Si no hay .sln, restauramos solo la API (que trae la referencia a Model).
+# 2. Restaura AMBOS proyectos
+# (dotnet restore ahora puede ver ambos archivos .csproj)
 RUN dotnet restore ZooModelos2/ZooModelos2.csproj
 
-# 3. Copia el resto de los archivos (Controladores, etc.)
+# 3. Copia el resto del código
+# Copia todo el contenido de la raíz del repositorio (incluyendo el código fuente de Model)
 COPY . . 
-# -------------------- FIN CORRECCIÓN CRÍTICA DE RUTAS ----------------------
 
+# 4. Mueve el directorio de trabajo a la API
 WORKDIR "/src/ZooModelos2" 
 
-# 4. Construye el proyecto API 
+# 5. Construye el proyecto API
 RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
