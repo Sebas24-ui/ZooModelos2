@@ -18,6 +18,6 @@ COPY . .
 
 # 5. Mueve el directorio de trabajo a la API
 WORKDIR "/src/ZooModelos2" 
-
+ 
 # 6. Construye el proyecto API
 RUN dotnet build "ZooModelos2.csproj" -c $BUILD_CONFIGURATION -o /app/build
