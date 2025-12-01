@@ -7,7 +7,7 @@ WORKDIR /src
 COPY ["ZooModelos2.csproj", "./"]
 RUN dotnet restore "ZooModelos2.csproj"
 COPY . .
-RUN dotnet build "WebApplication3.csproj" -c Release -o /app/build
+RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "ZooModelos2.csproj" -c Release -o /app/publish
