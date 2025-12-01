@@ -17,6 +17,6 @@ COPY . .
 # -------------------- FIN CORRECCIÓN CRÍTICA ------------------------------------
 
 WORKDIR "/src/ZooModelos2" 
-
+ 
 # 5. Construye el proyecto API
 RUN dotnet build "ZooModelos2.csproj" -c Release -o /app/build
