@@ -57,7 +57,7 @@ namespace ZooModelos
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            } 
 
             //app.UseHttpsRedirection();
 
