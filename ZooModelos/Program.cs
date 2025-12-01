@@ -45,7 +45,7 @@ namespace ZooModelos
                     db.Database.Migrate(); // Aplica todas las migraciones pendientes
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)  
             {
                 // Manejo de errores si la migración falla (generalmente por problemas de conexión a la DB)
                 var logger = app.Services.GetRequiredService<ILogger<Program>>();
