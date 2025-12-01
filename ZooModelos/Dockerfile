@@ -23,7 +23,7 @@ FROM build AS publish
 RUN dotnet publish "ZooModelos2.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Fase 4: Final
-FROM base AS final
+FROM base AS final 
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ZooModelos2.dll"]
