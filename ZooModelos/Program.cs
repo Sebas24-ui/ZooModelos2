@@ -37,6 +37,20 @@ namespace ZooModelos
                    = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
             var app = builder.Build();
+            try
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<ZooModelosContext>();
+                    db.Database.Migrate(); // Aplica todas las migraciones pendientes
+                }
+            }
+            catch (Exception ex) 
+            {
+                // Manejo de errores si la migración falla (generalmente por problemas de conexión a la DB)
+                var logger = app.Services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred while migrating the database.");
+            }
 
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
